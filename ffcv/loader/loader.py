@@ -101,6 +101,7 @@ class Loader:
                  drop_last: bool = True,
                  batches_ahead: int = 3,
                  recompile: bool = False,  # Recompile at every epoch
+                 duplicate_examples: int = 1,
                  ):
 
         if distributed and order == OrderOption.RANDOM and (seed is None):
