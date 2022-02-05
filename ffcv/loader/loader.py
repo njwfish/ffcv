@@ -130,7 +130,8 @@ class Loader:
         }
         self.fname: str = fname
         self.batch_size: int = batch_size
-        self.batches_ahead = batches_ahead
+        self.duplicate_examples: int = duplicate_examples
+        self.batches_ahead: int = batches_ahead
         self.seed: int = seed
         self.reader: Reader = Reader(self.fname, custom_fields)
         self.num_workers: int = num_workers
