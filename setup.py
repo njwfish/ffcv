@@ -33,7 +33,7 @@ extension_kwargs = pkgconfig('libturbojpeg', extension_kwargs)
 extension_kwargs['libraries'].append('pthread')
 
 
-libffcv = Extension('ffcv._libffcv',
+libffcv = Extension('ffcv.c_libffcv',
                         **extension_kwargs)
 
 setup(name='ffcv',
