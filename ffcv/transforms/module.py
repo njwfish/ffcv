@@ -18,7 +18,7 @@ class ModuleWrapper(Operation):
     """
     def __init__(self, module: ch.nn.Module):
         super().__init__()
-        self.module = module
+        self.module: ch.nn.Module = module
 
     def generate_code(self) -> Callable:
         def apply_module(inp, _):
