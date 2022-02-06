@@ -2,6 +2,7 @@
 Wrapper for a torch.nn.Module
 """
 import torch as ch
+from torch import Tensor
 from numpy.random import permutation, rand
 from typing import Callable, Optional, Tuple
 from ..pipeline.allocation_query import AllocationQuery
@@ -21,8 +22,8 @@ class ModuleWrapper(Operation):
         self.module: ch.nn.Module = module
 
     def generate_code(self) -> Callable:
-        def apply_module(inp, _):
-            res = self.module(inp)
+        def apply_module(inp, _) -> Tensor:
+            res: Tensor = self.module(inp)
             return res
 
         return apply_module
