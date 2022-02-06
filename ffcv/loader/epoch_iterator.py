@@ -27,7 +27,7 @@ class EpochIterator(Thread):
         self.order = order
         self.metadata = loader.reader.metadata
         self.current_batch_slot = 0
-        batches = list(chunks(order, self.loader.unique_batch_size))
+        batches = list(chunks(order, self.loader.batch_size))
         self.iter_ixes = iter(batches)
         self.closed = False
         self.output_queue = Queue(self.loader.batches_ahead)
@@ -53,7 +53,8 @@ class EpochIterator(Thread):
         # Allocate all the memory
         memory_allocations = {}
         for (p_id, p) in self.loader.pipelines.items():
-            memory_allocations[p_id] = p.allocate_memory(self.loader.batch_size,
+            memory_allocations[p_id] = p.allocate_memory(self.loader.batch_size * \
+                                                         self.loader.duplicate_examples,
                                                          self.loader.batches_ahead + 2)
 
         # Assign each memory bank to the pipeline stage it belongs to
@@ -74,7 +75,7 @@ class EpochIterator(Thread):
             Compiler.set_num_threads(self.loader.num_workers)
             while True:
                 ixes = next(self.iter_ixes)
-                ixes = np.repeat(ixes, self.loader.duplicate_examples)
+                ixes = np.rep(ixes, self.loader.duplicate_examples)
                 slot = self.current_batch_slot
                 self.current_batch_slot = (
                     slot + 1) % (self.loader.batches_ahead + 2)
