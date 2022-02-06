@@ -75,7 +75,7 @@ class EpochIterator(Thread):
             Compiler.set_num_threads(self.loader.num_workers)
             while True:
                 ixes = next(self.iter_ixes)
-                ixes = np.rep(ixes, self.loader.duplicate_examples)
+                ixes = np.repeat(ixes, self.loader.duplicate_examples)
                 slot = self.current_batch_slot
                 self.current_batch_slot = (
                     slot + 1) % (self.loader.batches_ahead + 2)
