@@ -13,6 +13,9 @@ from ffcv.fields.base import Field
 
 import torch as ch
 import numpy as np
+import albumentations as A
+
+from ffcv.transforms.albumentations import AlbumentationsWrapper
 
 from .epoch_iterator import EpochIterator
 from ..reader import Reader
@@ -189,9 +192,11 @@ class Loader:
                     raise ValueError(msg)
 
             for i, op in enumerate(operations):
-                assert isinstance(op, (ch.nn.Module, Operation)), op
+                assert isinstance(op, (A.BasicTransform, ch.nn.Module, Operation)), op
                 if isinstance(op, ch.nn.Module):
                     operations[i] = ModuleWrapper(op)
+                elif isinstance(op, A.BasicTransform):
+                    operations[i] = AlbumentationsWrapper(field_name, op)
 
             for op in operations:
                 op.accept_field(field)
